@@ -45,9 +45,9 @@ class douban250(
                     0]  #0 指代第一个list中指代第一个
             yield item
             #re 多页爬虫
-            next_page = response.xpath(
+        '''    next_page = response.xpath(
                 '//span[@class="next"]/a/@href').extract()
         if next_page:
             time.sleep(1)
             url = response.urljoin(next_page[0])
-            yield scrapy.Request(url, headers=headers)
+            yield scrapy.Request(url, headers=headers)'''
