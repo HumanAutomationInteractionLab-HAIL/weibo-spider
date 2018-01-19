@@ -31,8 +31,8 @@ codetype = 1004
 # 超时时间，秒
 timeout = 60
 
-
 ######################################################################
+
 
 class YDMHttp:
     apiurl = 'http://api.yundama.net:5678/api.php'
@@ -57,8 +57,13 @@ class YDMHttp:
         return response
 
     def balance(self):
-        data = {'method': 'balance', 'username': self.username, 'password': self.password, 'appid': self.appid,
-                'appkey': self.appkey}
+        data = {
+            'method': 'balance',
+            'username': self.username,
+            'password': self.password,
+            'appid': self.appid,
+            'appkey': self.appkey
+        }
         response = self.request(data)
         if (response):
             if (response['ret'] and response['ret'] < 0):
@@ -69,8 +74,13 @@ class YDMHttp:
             return -9001
 
     def login(self):
-        data = {'method': 'login', 'username': self.username, 'password': self.password, 'appid': self.appid,
-                'appkey': self.appkey}
+        data = {
+            'method': 'login',
+            'username': self.username,
+            'password': self.password,
+            'appid': self.appid,
+            'appkey': self.appkey
+        }
         response = self.request(data)
         if (response):
             if (response['ret'] and response['ret'] < 0):
@@ -81,8 +91,15 @@ class YDMHttp:
             return -9001
 
     def upload(self, filename, codetype, timeout):
-        data = {'method': 'upload', 'username': self.username, 'password': self.password, 'appid': self.appid,
-                'appkey': self.appkey, 'codetype': str(codetype), 'timeout': str(timeout)}
+        data = {
+            'method': 'upload',
+            'username': self.username,
+            'password': self.password,
+            'appid': self.appid,
+            'appkey': self.appkey,
+            'codetype': str(codetype),
+            'timeout': str(timeout)
+        }
         file = {'file': filename}
         response = self.request(data, file)
         if (response):
@@ -94,8 +111,14 @@ class YDMHttp:
             return -9001
 
     def result(self, cid):
-        data = {'method': 'result', 'username': self.username, 'password': self.password, 'appid': self.appid,
-                'appkey': self.appkey, 'cid': str(cid)}
+        data = {
+            'method': 'result',
+            'username': self.username,
+            'password': self.password,
+            'appid': self.appid,
+            'appkey': self.appkey,
+            'cid': str(cid)
+        }
         response = self.request(data)
         return response and response['text'] or ''
 
@@ -114,6 +137,7 @@ class YDMHttp:
 
 
 ######################################################################
+
 
 def post_url(url, fields, files=[]):
     urlparts = urlparse.urlsplit(url)
@@ -148,7 +172,8 @@ def encode_multipart_formdata(fields, files=[]):
         key = field
         filepath = files[key]
         L.append('--' + BOUNDARY)
-        L.append('Content-Disposition: form-data; name="%s"; filename="%s"' % (key, filepath))
+        L.append('Content-Disposition: form-data; name="%s"; filename="%s"' %
+                 (key, filepath))
         L.append('Content-Type: %s' % get_content_type(filepath))
         L.append('')
         L.append(open(filepath, 'rb').read())
@@ -168,20 +193,20 @@ def get_content_type(filename):
 
 def identify():
     if (username == 'username'):
-        print '请设置好相关参数再测试'
+        print('请设置好相关参数再测试')
     else:
         # 初始化
         yundama = YDMHttp(username, password, appid, appkey)
 
         # 登陆云打码
-        uid = yundama.login();
-        # print 'uid: %s' % uid
+        uid = yundama.login()
+        # print ( 'uid: %s' % uid)
 
         # 查询余额
-        balance = yundama.balance();
-        # print 'balance: %s' % balance
+        balance = yundama.balance()
+        # print ( 'balance: %s' % balance)
 
         # 开始识别，图片路径，验证码类型ID，超时时间（秒），识别结果
-        cid, result = yundama.decode(filename, codetype, timeout);
-        # print 'cid: %s, result: %s' % (cid, result)
+        cid, result = yundama.decode(filename, codetype, timeout)
+        # print ( 'cid: %s, result: %s' % (cid, result))
         return result

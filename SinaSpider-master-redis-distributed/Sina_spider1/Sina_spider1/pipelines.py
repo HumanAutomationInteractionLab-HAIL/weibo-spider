@@ -17,12 +17,12 @@ class MongoDBPipleline(object):
         if isinstance(item, InformationItem):
             try:
                 self.Information.insert(dict(item))
-            except Exception:
+            except e:
                 pass
         elif isinstance(item, TweetsItem):
             try:
                 self.Tweets.insert(dict(item))
-            except Exception:
+            except e:
                 pass
         elif isinstance(item, FollowsItem):
             followsItems = dict(item)
@@ -31,7 +31,7 @@ class MongoDBPipleline(object):
                 followsItems[str(i + 1)] = follows[i]
             try:
                 self.Follows.insert(followsItems)
-            except Exception:
+            except e:
                 pass
         elif isinstance(item, FansItem):
             fansItems = dict(item)
@@ -40,6 +40,6 @@ class MongoDBPipleline(object):
                 fansItems[str(i + 1)] = fans[i]
             try:
                 self.Fans.insert(fansItems)
-            except Exception:
+            except e:
                 pass
         return item
