@@ -1,0 +1,22 @@
+/*{
+    "version": "0.1.0",
+    "command": "chrome",    
+    "windows": {
+        "command": "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+       //"command": "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
+    },
+    "args": ["${file}"]
+}*/
+{
+    "version": "0.1.0",
+    "command": "${config:python.pythonPath}",
+    "isShellCommand": true,
+    "args": [
+        "${file}"
+    ],
+    "showOutput": "always",
+    "options": {
+        "env": {
+            "PYTHONIOENCODING": "UTF-8"
+        }
+    }
