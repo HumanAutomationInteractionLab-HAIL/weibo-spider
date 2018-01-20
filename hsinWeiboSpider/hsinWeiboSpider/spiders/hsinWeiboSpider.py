@@ -14,7 +14,12 @@ from hsinWeiboSpider.weiboId import weiboID
 class Spider(scrapy.Spider):
     name = "hsinWeiboSpider"
     host = "https://m.weibo.cn"
-    start_urls = weiboID[]
+    #id = 1993586607
+    #for n in range(500):
+    #    id = id + 3
+    #    weiboId = weiboId.append(id)
+    weiboId=[5676304901]
+    start_urls = weiboID
     scrawl_ID = set(start_urls)  # Recording ready ID
     finish_ID = set()  # Recording crwled ID
 
@@ -36,10 +41,11 @@ class Spider(scrapy.Spider):
             global cookies
             cookies = {
                 "Cookie":
-                " _T_WM=bb0f26cfaec31b1b64566a1e21e88e0b; SUHB=0A0IP5POp5orr_; SCF=ApAI1z-zWWPUna8W3sAgo508dFgkXxfdhwvX0uRRYtbKNMPKelKHr1dzona_D9BKV6OCRJydN_uDZei5GoiwaQ0.; WEIBOCN_FROM=1110006030; M_WEIBOCN_PARAMS=fid%3D1076035580754946%26uicode%3D10000011"
+                "_T_WM=82575ffe7f3daaf9abd2f2d385385225; WEIBOCN_FROM=1110006030; M_WEIBOCN_PARAMS=luicode%3D10000011%26lfid%3D1076031724367710%26fid%3D1005055580754946%26uicode%3D10000011"
+                #" _T_WM=bb0f26cfaec31b1b64566a1e21e88e0b; SUHB=0A0IP5POp5orr_; SCF=ApAI1z-zWWPUna8W3sAgo508dFgkXxfdhwvX0uRRYtbKNMPKelKHr1dzona_D9BKV6OCRJydN_uDZei5GoiwaQ0.; WEIBOCN_FROM=1110006030; M_WEIBOCN_PARAMS=fid%3D1076035580754946%26uicode%3D10000011"
             }
             global page
-            page = 1
+            page = 300
             url_mainSite = "https://m.weibo.cn/%s" % ID
             url_xhr_userinfo = "https://m.weibo.cn/api/container/getIndex?type=uid&value=%s" % ID
 
@@ -126,34 +132,34 @@ class Spider(scrapy.Spider):
             WeibosItems["Created_At"] = {}
             WeibosItems["User"] = {}
             for i in range(10):
-                #if "retweeted_status" not in data["data"]["cards"][i]["mblog"]:
-                #if data["data"]["cards"][i]["card_type"] == 9:
-                Content[i] = data["data"]["cards"][i]["mblog"]["text"]
-                if "retweeted_status" in data["data"]["cards"][i]["mblog"]:
-                    Content[
-                        i] = "Repost: " + data["data"]["cards"][i]["mblog"]["retweeted_status"]["text"] + " Say:" + Content[i]
-                Weibo_Id[i] = data["data"]["cards"][i]["mblog"]["id"]
-                WeibosItems["Weibo_Id"][i] = Weibo_Id[i]
-                link = re.findall(u"<.*?>", Content[i])
-                if link:
-                    for n in range(len(link)):
-                        Content[i] = re.sub(link[n], "_", Content[i])
-                WeibosItems["Content"][i] = Content[i]
-                Source[i] = data['data']["cards"][i]["mblog"]["source"]
-                Attitudes_Count[i] = data['data']["cards"][i]["mblog"][
-                    "attitudes_count"]
-                Comments_Count[i] = data['data']["cards"][i]["mblog"][
-                    "comments_count"]
-                Created_At[i] = data['data']["cards"][i]["mblog"]["created_at"]
-                User[i] = data['data']["cards"][i]["mblog"]["user"][
-                    "screen_name"]
-                #Pics = {}  #pics .data.cards[4].mblog.pics["0"].url
-                #Stream_Url = {}  #media .data.cards["0"].mblog.page_info.media_info.stream_url
-                WeibosItems["Source"] = Source[i]
-                WeibosItems["Attitudes_Count"] = Attitudes_Count[i]
-                WeibosItems["Comments_Count"] = Comments_Count[i]
-                WeibosItems["Created_At"] = Created_At[i]
-                WeibosItems["User"] = User[i]
+                if "card_type" in data["data"]["cards"][i]:
+                    if data["data"]["cards"][i]["card_type"] == 9:
+                        Content[i] = data["data"]["cards"][i]["mblog"]["text"]
+                        if "retweeted_status" in data["data"]["cards"][i]["mblog"]:
+                            Content[
+                                i] = "Repost: " + data["data"]["cards"][i]["mblog"]["retweeted_status"]["text"] + " Say:" + Content[i]
+                        Weibo_Id[i] = data["data"]["cards"][i]["mblog"]["id"]
+                        WeibosItems["Weibo_Id"][i] = Weibo_Id[i]
+                        link = re.findall(u"<.*?>", Content[i])
+                        if link:
+                            for n in range(len(link)):
+                                Content[i] = re.sub(link[n], "_", Content[i])
+                        WeibosItems["Content"][i] = Content[i]
+                        Source[i] = data['data']["cards"][i]["mblog"]["source"]
+                        Attitudes_Count[i] = data['data']["cards"][i]["mblog"][
+                            "attitudes_count"]
+                        Comments_Count[i] = data['data']["cards"][i]["mblog"][
+                            "comments_count"]
+                        Created_At[i] = data['data']["cards"][i]["mblog"]["created_at"]
+                        User[i] = data['data']["cards"][i]["mblog"]["user"][
+                            "screen_name"]
+                        #Pics = {}  #pics .data.cards[4].mblog.pics["0"].url
+                        #Stream_Url = {}  #media .data.cards["0"].mblog.page_info.media_info.stream_url
+                        WeibosItems["Source"] = Source[i]
+                        WeibosItems["Attitudes_Count"] = Attitudes_Count[i]
+                        WeibosItems["Comments_Count"] = Comments_Count[i]
+                        WeibosItems["Created_At"] = Created_At[i]
+                        WeibosItems["User"] = User[i]
         #informationItems["_id"] = response.meta["ID"]
         yield WeibosItems
 
