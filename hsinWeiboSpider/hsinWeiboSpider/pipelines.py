@@ -45,7 +45,7 @@ class JsonPipeline(object):
 
     def process_item(self, item, spider):
         self.exporter.export_item(item)
-        return item
+        #return item
 
 
 class MongoDBPipeline(object):
@@ -56,21 +56,26 @@ class MongoDBPipeline(object):
         self.collection = db[settings.get('MONGODB_COLLECTION')]
 
     def process_item(self, item, spider):
-        for j in range(10):
-            try:
-                jStr = str(j)
-                newItem = {
-                    "Attitudes_Count": item["Attitudes_Count"][jStr],
-                    "Comments_Count": item["Comments_Count"][jStr],
-                    "Content": item["Content"][jStr],
-                    "Created_At": item["Created_At"][jStr],
-                    "Source": item["Source"][jStr],
-                    "User": item["User"][jStr],
-                    "Weibo_Id": item["Weibo_Id"][jStr],
-                }
-                postItem = dict(newItem)  # 把item转化成字典形式
+        if "NickName" in item:
+            print("item profile", item)
+            profileItem = dict(item)
+            self.collection.insert(profileItem)  # 向数据库插入一条记录
+        else:
+            for j in range(10):
+                try:
+                    jStr = str(j)
+                    newItem = {
+                        "Attitudes_Count": item["Attitudes_Count"][jStr],
+                        "Comments_Count": item["Comments_Count"][jStr],
+                        "Content": item["Content"][jStr],
+                        "Created_At": item["Created_At"][jStr],
+                        "Source": item["Source"][jStr],
+                        "User": item["User"][jStr],
+                        "Weibo_Id": item["Weibo_Id"][jStr],
+                    }
+                    postItem = dict(newItem)  # 把item转化成字典形式
 
-                self.collection.insert(postItem)  # 向数据库插入一条记录
-            except:
-                print("error occurs in Item")
-        return item  # 会在控制台输出原item数据，可以选择不写
+                    self.collection.insert(postItem)  # 向数据库插入一条记录
+                except:
+                    print("error occurs in Item")
+        #return 0  # 会在控制台输出原item数据，可以选择不写

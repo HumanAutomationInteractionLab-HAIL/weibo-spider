@@ -42,7 +42,6 @@ class Spider(scrapy.Spider):
             cookies = {
                 "Cookie":
                 "_T_WM=34588bc4ef8dd424b709d5a97b97b4b0; SUB=_2A253ahhlDeRhGeBK6FsY8CrJzT2IHXVUlLgtrDV6PUJbkdBeLWvFkW1NR9H5-0XZ8J3eVn8DgRLdsxch2WRKc7a1; SUHB=0OMkltcq6DUvFB; SCF=AooggcZRunKXIVk9TSOIxNTw-lfAxP1SBtFa-m2nQnnGhF8QYgJlKeAe19dYC2K5NNemqSZ3KTnrdxla7HoY7CQ.; SSOLoginState=1517185077; WEIBOCN_FROM=1110006030; M_WEIBOCN_PARAMS=luicode%3D20000174%26lfid%3D1076035580754946%26fid%3D1005051651428902%26uicode%3D10000011"
-                #" _T_WM=bb0f26cfaec31b1b64566a1e21e88e0b; SUHB=0A0IP5POp5orr_; SCF=ApAI1z-zWWPUna8W3sAgo508dFgkXxfdhwvX0uRRYtbKNMPKelKHr1dzona_D9BKV6OCRJydN_uDZei5GoiwaQ0.; WEIBOCN_FROM=1110006030; M_WEIBOCN_PARAMS=fid%3D1076035580754946%26uicode%3D10000011"
             }
 
             url_mainSite = "https://m.weibo.cn/%s" % ID

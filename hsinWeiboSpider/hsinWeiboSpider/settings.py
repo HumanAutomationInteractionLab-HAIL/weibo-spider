@@ -30,15 +30,15 @@ DOWNLOADER_MIDDLEWARES = {
 ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 500  #to improve the cpu ability
+CONCURRENT_REQUESTS = 32  #to improve the cpu ability
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
 DOWNLOAD_DELAY = 0.5
 # The download delay setting will honor only one of:
-CONCURRENT_REQUESTS_PER_DOMAIN = 16
-CONCURRENT_REQUESTS_PER_IP = 16
+CONCURRENT_REQUESTS_PER_DOMAIN = 20
+CONCURRENT_REQUESTS_PER_IP = 20
 
 # Disable cookies (enabled by default)
 #COOKIES_ENABLED = False
@@ -103,7 +103,7 @@ AUTOTHROTTLE_DEBUG = True
 
 ITEM_PIPELINES = {
     'hsinWeiboSpider.pipelines.MongoDBPipeline': 100,
-    'hsinWeiboSpider.pipelines.JsonPipeline': 300,
+    #'hsinWeiboSpider.pipelines.JsonPipeline': 300,
     #'hsinWeiboSpider.pipelines.CsvPipeline': 200,
 }
 #FEED_FORMAT = "csv"
