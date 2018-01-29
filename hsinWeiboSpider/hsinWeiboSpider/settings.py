@@ -11,6 +11,11 @@
 
 BOT_NAME = 'hsinWeiboSpider'
 
+MONGODB_SERVER = "localhost"
+MONGODB_PORT = 27017
+MONGODB_DB = "weiboSpider"
+MONGODB_COLLECTION = "postsnew"
+
 SPIDER_MODULES = ['hsinWeiboSpider.spiders']
 NEWSPIDER_MODULE = 'hsinWeiboSpider.spiders'
 #MIDDLEWARES
@@ -70,14 +75,14 @@ CONCURRENT_REQUESTS_PER_IP = 16
 #ITEM_PIPELINES = {
 #    'mswallpaper.pipelines.MswallpaperPipeline': 300,
 #}
-ITEM_PIPELINES = {'scrapy.contrib.pipeline.images.ImagesPipeline': 1}
-IMAGES_STORE = 'C:\\Users\\admin\\OneDrive\\git\\weibo-spider\hsinWeiboSpider\\hsinWeiboSpider\\spiders\\hsinWeiboImages'
-IMAGES_EXPIRES = 90
-IMAGES_MIN_HEIGHT = 150
-IMAGES_MIN_WIDTH = 200
-# Enable and configure the AutoThrottle extension (disabled by default)
+#ITEM_PIPELINES = {'scrapy.contrib.pipeline.images.ImagesPipeline': 1}
+#IMAGES_STORE = 'C:\\Users\\admin\\OneDrive\\git\\weibo-spider\hsinWeiboSpider\\hsinWeiboSpider\\spiders\\hsinWeiboImages'
+#IMAGES_EXPIRES = 90
+#IMAGES_MIN_HEIGHT = 150
+#IMAGES_MIN_WIDTH = 200
+## Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
-AUTOTHROTTLE_ENABLED = True
+AUTOTHROTTLE_ENABLED = False
 # The initial download delay
 AUTOTHROTTLE_START_DELAY = 5
 # The maximum download delay to be set in case of high latencies
@@ -97,6 +102,7 @@ AUTOTHROTTLE_DEBUG = True
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 ITEM_PIPELINES = {
+    'hsinWeiboSpider.pipelines.MongoDBPipeline': 100,
     'hsinWeiboSpider.pipelines.JsonPipeline': 300,
     #'hsinWeiboSpider.pipelines.CsvPipeline': 200,
 }
