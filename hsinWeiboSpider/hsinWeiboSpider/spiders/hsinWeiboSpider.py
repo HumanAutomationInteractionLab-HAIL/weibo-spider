@@ -27,7 +27,6 @@ class Spider(scrapy.Spider):
             ID = str(ID)
             global page
             page = 2
-
             global cookies
             global headersNew
             headersNew = {
@@ -65,7 +64,7 @@ class Spider(scrapy.Spider):
         try:
             informationItems = InformationItem()
             data = json.loads(response.body)
-            if data:
+            if data: #Get data of profile attributes
                 NickName = data["data"]["userInfo"]["screen_name"]
                 Statuses_Count = data["data"]["userInfo"][
                     "statuses_count"]  #Number of weibos
@@ -76,18 +75,13 @@ class Spider(scrapy.Spider):
                     "containerid"]  #Container ID
 
             informationItems["_id"] = response.meta["ID"]
-            if NickName:
+                #Set datum for each item
                 informationItems["NickName"] = NickName
-            if Gender:
                 informationItems["Gender"] = Gender
-            if Num_Follows:
                 informationItems["Num_Follows"] = Num_Follows
-            if Num_Fans:
                 informationItems["Num_Fans"] = Num_Fans
-            if Statuses_Count:
                 informationItems[
                     "Statuses_Count"] = Statuses_Count  #num of weibos
-            if Containerid:
                 informationItems["Containerid"] = Containerid
                 informationItems[
                     "URL"] = "https://m.weibo.cn/%s" % response.meta["ID"]
@@ -135,22 +129,18 @@ class Spider(scrapy.Spider):
                 WeibosItems["Comments_Count"] = {}
                 WeibosItems["Created_At"] = {}
                 WeibosItems["User"] = {}
-                for i in range(10):
+                for i in range(10): #Go through 10 posts for each page
                     #if "card_type" in data["data"]["cards"][i]:
-                    iStr = str(i)
-                    if data["data"]["cards"][i]["card_type"] == 9:
-                        Content[i] = data["data"]["cards"][i]["mblog"]["text"]
+                    iStr = str(i) #Dictionary will be used later
+                    if data["data"]["cards"][i]["card_type"] == 9: #See if it is real post
+                        Content[i] = data["data"]["cards"][i]["mblog"]["text"] 
                         if "retweeted_status" in data["data"]["cards"][i][
-                                "mblog"]:
+                                "mblog"]: #Handle reposted post
                             Content[
                                 i] = "Repost: " + data["data"]["cards"][i]["mblog"]["retweeted_status"]["text"] + " Say:" + Content[i]
                         Weibo_Id[i] = data["data"]["cards"][i]["mblog"]["id"]
                         WeibosItems["Weibo_Id"][iStr] = Weibo_Id[i]
-                        #link = re.findall(u"<.*?>", Content[i])
-                        #if link:
-                        #    for n in range(len(link)):
-                        #        Content[i] = re.sub(link[n], "_", Content[i])
-                        Content[i] = re.sub("<.*?>", "", Content[i])
+                        Content[i] = re.sub("<.*?>", "", Content[i]) #Re to delete the url in contents
                         WeibosItems["Content"][iStr] = Content[i]
                         Source[i] = data['data']["cards"][i]["mblog"]["source"]
                         Attitudes_Count[i] = data['data']["cards"][i]["mblog"][
@@ -163,16 +153,20 @@ class Spider(scrapy.Spider):
                             "screen_name"]
                         #Pics = {}  #pics .data.cards[4].mblog.pics["0"].url
                         #Stream_Url = {}  #media .data.cards["0"].mblog.page_info.media_info.stream_url
+
+                        #Produce Items
                         WeibosItems["Source"][iStr] = Source[i]
                         WeibosItems["Attitudes_Count"][iStr] = Attitudes_Count[
                             i]
                         WeibosItems["Comments_Count"][iStr] = Comments_Count[i]
                         WeibosItems["Created_At"][iStr] = Created_At[i]
                         WeibosItems["User"][iStr] = User[i]
-            #informationItems["_id"] = response.meta["ID"]
         except:
             print("Error occurs")
+
         yield WeibosItems
+
+        #Get data from further pages
         page = response.meta["page"] + 1
         if (page <= pages):
             print("current page is ", page)
@@ -186,7 +180,7 @@ class Spider(scrapy.Spider):
                     headers=headersNew,
                     cookies=cookies,
                     callback=self.parseWeibo)  #crawl the next page of weibo
-            except:
+            except: #Reconnect in case of connection failed
                 time.sleep(1)
                 yield scrapy.Request(
                     url=next_page,
@@ -196,10 +190,16 @@ class Spider(scrapy.Spider):
                     headers=headersNew,
                     cookies=cookies,
                     callback=self.parseWeibo)  #crawl the next page of weibo
-
+    
+    #Future works
     def parseMoreProfile(self, response):
         informationItems = InformationItem()
         data = json.loads(response.body)
         if data:
             Location = data["data"].cards["0"].card_group[4].item_content
             Statuses_Count = data["data"]["userInfo"]["statuses_count"]
+    
+    def parseDataBySearch(self, response):
+        pass
+    
+    def 
