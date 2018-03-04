@@ -51,7 +51,11 @@ class JsonPipeline(object):
 class MongoDBPipeline(object):
     def __init__(self):
         connection = pymongo.MongoClient(
-            settings.get('MONGODB_SERVER'), settings.get('MONGODB_PORT'))
+            settings.get('MONGODB_SERVER'),
+            settings.get('MONGODB_PORT'),
+            #username='fxy7999148',
+            #password='operation'
+        )
         db = connection[settings.get('MONGODB_DB')]
         self.collection = db[settings.get('MONGODB_COLLECTION')]
 

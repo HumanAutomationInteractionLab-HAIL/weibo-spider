@@ -64,7 +64,7 @@ class Spider(scrapy.Spider):
         try:
             informationItems = InformationItem()
             data = json.loads(response.body)
-            if data: #Get data of profile attributes
+            if data:  #Get data of profile attributes
                 NickName = data["data"]["userInfo"]["screen_name"]
                 Statuses_Count = data["data"]["userInfo"][
                     "statuses_count"]  #Number of weibos
@@ -74,7 +74,7 @@ class Spider(scrapy.Spider):
                 Containerid = data["data"]["tabsInfo"]["tabs"][1][
                     "containerid"]  #Container ID
 
-            informationItems["_id"] = response.meta["ID"]
+                informationItems["_id"] = response.meta["ID"]
                 #Set datum for each item
                 informationItems["NickName"] = NickName
                 informationItems["Gender"] = Gender
@@ -129,18 +129,21 @@ class Spider(scrapy.Spider):
                 WeibosItems["Comments_Count"] = {}
                 WeibosItems["Created_At"] = {}
                 WeibosItems["User"] = {}
-                for i in range(10): #Go through 10 posts for each page
+                for i in range(10):  #Go through 10 posts for each page
                     #if "card_type" in data["data"]["cards"][i]:
-                    iStr = str(i) #Dictionary will be used later
-                    if data["data"]["cards"][i]["card_type"] == 9: #See if it is real post
-                        Content[i] = data["data"]["cards"][i]["mblog"]["text"] 
+                    iStr = str(i)  #Dictionary will be used later
+                    if data["data"]["cards"][i][
+                            "card_type"] == 9:  #See if it is real post
+                        Content[i] = data["data"]["cards"][i]["mblog"]["text"]
                         if "retweeted_status" in data["data"]["cards"][i][
-                                "mblog"]: #Handle reposted post
+                                "mblog"]:  #Handle reposted post
                             Content[
                                 i] = "Repost: " + data["data"]["cards"][i]["mblog"]["retweeted_status"]["text"] + " Say:" + Content[i]
                         Weibo_Id[i] = data["data"]["cards"][i]["mblog"]["id"]
                         WeibosItems["Weibo_Id"][iStr] = Weibo_Id[i]
-                        Content[i] = re.sub("<.*?>", "", Content[i]) #Re to delete the url in contents
+                        Content[i] = re.sub(
+                            "<.*?>", "",
+                            Content[i])  #Re to delete the url in contents
                         WeibosItems["Content"][iStr] = Content[i]
                         Source[i] = data['data']["cards"][i]["mblog"]["source"]
                         Attitudes_Count[i] = data['data']["cards"][i]["mblog"][
@@ -180,7 +183,7 @@ class Spider(scrapy.Spider):
                     headers=headersNew,
                     cookies=cookies,
                     callback=self.parseWeibo)  #crawl the next page of weibo
-            except: #Reconnect in case of connection failed
+            except:  #Reconnect in case of connection failed
                 time.sleep(1)
                 yield scrapy.Request(
                     url=next_page,
@@ -190,7 +193,7 @@ class Spider(scrapy.Spider):
                     headers=headersNew,
                     cookies=cookies,
                     callback=self.parseWeibo)  #crawl the next page of weibo
-    
+
     #Future works
     def parseMoreProfile(self, response):
         informationItems = InformationItem()
@@ -198,8 +201,8 @@ class Spider(scrapy.Spider):
         if data:
             Location = data["data"].cards["0"].card_group[4].item_content
             Statuses_Count = data["data"]["userInfo"]["statuses_count"]
-    
+
     def parseDataBySearch(self, response):
         pass
-    
-    def 
+
+# def
