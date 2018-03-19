@@ -1,4 +1,4 @@
-# python weibospider plan
+# python weibospider
 
 ## Contents
 
