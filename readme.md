@@ -1,12 +1,12 @@
 # python weibospider plan
 
-## Materials collecting
+## Contents
 
-1. weibo spider.
-2. python craweling.
-3. python tutorial and standard library.
-4. data structure and algorithm by python.
+1. HsinWeiboSpider with mongoDB = ./hsinWeiboSpider  
+2. douban top 250 movies crawler as test crawler 1 = ./douban250  
+3. mswallpaper is a crawler to grab wallpapers from microsoft as test crawler 2 = ./mswallpaper  
+4. douban top 250 movies crawler by scrapy as test crawler 3 = ./scrapyspider  
+5. Others are useless and most of them are gathered as reference weibo spider
 
-## Studying tips
 
-1. make notes
+## Have fun!
